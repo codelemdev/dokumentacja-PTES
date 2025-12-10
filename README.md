@@ -527,7 +527,7 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 	```
 
 - **Dowód wizualny:**
-	![Błąd wyświetlania](/screenshots/WebShell.png)
+	![Błąd wyświetlania](/screenshots/PoC-WebShell.png)
 
 - **Ryzyko:** Krytyczne. Luka umożliwia anonimowemu atakującemu zdalne wykonanie dowolnego kodu (RCE), co prowadzi do całkowitego przejęcia kontroli nad serwerem, kradzieży danych z bazy oraz możliwości ataku na inne zasoby w sieci wewnętrznej.
 
