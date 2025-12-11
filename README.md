@@ -113,12 +113,12 @@ _Selekcja podatności do szczegółowej weryfikacji w kontekście OWASP Top 10 (
 | :------- | :-------------------------------------------- | :-------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------ |
 | **V-01** | **A03:2025 – Injection**                      | **Remote Code Execution (RCE)**         | Wtyczka `social-warfare` v3.5.2                  | Uzyskanie powłoki systemowej (reverse shell).                             |
 | **V-02** | **A03:2025 – Injection**                      | **SQL Injection (SQLi)**                | Wtyczka `wp-advanced-search` v3.3.3              | Ekstrakcja danych uwierzytelniających z DB.                               |
-| **V-03** | **A07:2025 – Identification & Auth Failures** | **Brute Force (XML-RPC)**               | Interfejs `xmlrpc.php`                           | Złamanie hasła użytkownika `kowal321`.                                    |
+| **V-03** | **A07:2025 – Identification & Auth Failures** | **Brute Force (XML-RPC)**               | WordPress Core `XML-RPC`                           | Złamanie hasła użytkownika `kowal321`.                                    |
 | **V-04** | **A03:2025 – Injection**                      | **Stored Cross-Site Scripting (XSS)**   | WordPress Core 5.3 / Komentarze                  | Wstrzyknięcie złośliwego kodu przez użytkownika anonimowego (Bypass filtrów).               |
 | **V-05** | **A05:2025 – Security Misconfiguration**      | **Sensitive Data Exposure (User Enum)** | REST API (`/wp/v2/users`)                        | Enumeracja loginów użytkowników (ułatwienie ataku brute force).           |
 | **V-06** | **A01:2025 – Broken Access Control**          | **Cross-Site Request Forgery (CSRF)**   | Wtyczka `wp-advanced-search` v3.3.3              | Nieautoryzowana zmiana ustawień (Eskalacja przywilejów dla ról niższych). |
-| **V-07** | **A10:2025 – Server-Side Request Forgery**    | **Blind SSRF**                          | WordPress Core (XML-RPC)                         | Skanowanie portów wewnętrznej infrastruktury.                             |
-| **V-08** | **A03:2025 – Injection**                      | **Arbitrary File Upload (RCE)**         | Wtyczka `wp-file-upload`<br>Strona `/rekrutacja` | Wgranie interaktywnej powłoki systemowej (Web Shell) i przejęcie serwera. |
+| **V-07** | **A10:2025 – Server-Side Request Forgery**    | **Blind SSRF**                          | WordPress Core `XML-RPC`                         | Skanowanie portów wewnętrznej infrastruktury.                             |
+| **V-08** | **A04:2025 – Insecure Design** | **Arbitrary File Upload (RCE)** | Wtyczka `wp-file-upload`<br>Strona /rekrutacja | Wgranie interaktywnej powłoki systemowej (Web Shell) i przejęcie serwera. |
 
 ## FAZA 4: Analiza Podatności (Vulnerability Analysis)
 _Weryfikacja istnienia podatności._
@@ -170,16 +170,16 @@ _Weryfikacja istnienia podatności._
 _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 ### Rejestr Ustaleń (Findings Log)
 
-| ID       | Podatność                                 | Klasyfikacja (CVE/CWE) | Kategoria OWASP 2025                      | Poziom Ryzyka | Status Eksploatacji                                            |
-| :------- | :---------------------------------------- | ---------------------- | :---------------------------------------- | :------------ | :------------------------------------------------------------- |
-| **V-01** | **RCE**<br>(Social Warfare)               | CVE-2019-9978          | A03:2025 – Injection                      | **Krytyczny** | **Sukces**<br>(Uzyskano dostęp do `wp-config.php`)             |
-| **V-02** | **SQL Injection** (WP Advanced Search)    | CVE-2020-12104         | A03:2025 – Injection                      | **Krytyczny** | **Sukces**<br>(Ekstrakcja nazwy bazy danych)                   |
-| **V-03** | **Brute Force** (XML-RPC)                 | CWE-307                | A07:2025 – Identification & Auth Failures | **Wysoki**    | **Sukces**<br>(Przejęcie konta `kowal321`)                     |
-| **V-04** | **Stored XSS** (Komentarze) | CVE-2019-20041 | A03:2025 – Injection | **Wysoki** | **Sukces**<br>(Potwierdzono wstrzyknięcie kodu w źródle strony) |
-| **V-05** | **Sensitive Data Exposure**<br>(REST API) | CWE-200                | A05:2025 – Security Misconfiguration      | **Średni**    | **Sukces**<br>(Ujawniono login administratora `konrad-138531`) |
-| **V-06** | **CSRF** <br>(WP Advanced Search)         | CVE-2022-47447         | A01:2025 – Broken Access Control          | **Średni**    | **Sukces**<br>(Wymuszono obniżenie zabezpieczeń dostępu)          |
-| **V-07** | **Blind SSRF** (XML-RPC)                  | CVE-2022-3590          | A10:2025 – Server-Side Request Forgery    | **Średni**    | **Sukces**<br>(Potwierdzono metodą Blind/Silent)                  |
-| **V-08** | **RCE**<br>(File Upload)                  | CWE-434                | A03:2025 – Injection                      | **Krytyczny** | **Sukces**<br>(Wgrano GUI Web Shell)                           |
+| ID | Podatność | Klasyfikacja (CVE/CWE) | Kategoria OWASP 2025 | CVSS v4.0 Score | Poziom Ryzyka | Status Eksploatacji |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **V-01** | **RCE**<br>(Social Warfare) | CVE-2019-9978 | A03:2025 – Injection | **9.3** | **Krytyczny** | **Sukces**<br>(Uzyskano dostęp do `wp-config.php`) |
+| **V-02** | **SQL Injection** (WP Advanced Search) | CVE-2020-12104 | A03:2025 – Injection | **9.3** | **Krytyczny** | **Sukces**<br>(Ekstrakcja nazwy bazy danych) |
+| **V-03** | **Brute Force** (XML-RPC) | CWE-307 | A07:2025 – Identification & Auth Failures | **6.9** | **Średni** | **Sukces**<br>(Przejęcie konta `kowal321`) |
+| **V-04** | **Stored XSS** (Komentarze) | CVE-2019-20041 | A03:2025 – Injection | **5.1** | **Średni** | **Sukces**<br>(Wstrzyknięcie kodu JS) |
+| **V-05** | **Sensitive Data Exposure**<br>(REST API) | CWE-200 | A05:2025 – Security Misconfiguration | **6.9** | **Średni** | **Sukces**<br>(Ujawniono login administratora) |
+| **V-06** | **CSRF** <br>(WP Advanced Search) | CVE-2022-47447 | A01:2025 – Broken Access Control | **5.3** | **Średni** | **Sukces**<br>(Wymuszono obniżenie zabezpieczeń) |
+| **V-07** | **Blind SSRF** (XML-RPC) | CVE-2022-3590 | A10:2025 – Server-Side Request Forgery | **6.0** | **Średni** | **Sukces**<br>(Potwierdzono metodą Blind) |
+| **V-08** | **Arbitrary File Upload (RCE)** | CWE-434 | A04:2025 – Insecure Design | **9.3** | **Krytyczny** | **Sukces**<br>(Wgrano GUI Web Shell) |
 
 ### V-01: RCE w Social Warfare - A03:2025 – Injection
 
@@ -188,6 +188,10 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 - **CVE:** CVE-2019-9978
 
 - **Podatność:** Remote Code Execution (RCE) / Unauthenticated Arbitrary Settings Update
+
+- **CVSS v4.0 Score:** 9.3 (Critical)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N`
 
 - **Lokalizacja:** `/wp-admin/admin-post.php` (parametry GET: `swp_debug`, `swp_url`)
 
@@ -241,6 +245,10 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 
 - **Podatność:** SQL Injection (Error-Based)
 
+- **CVSS v4.0 Score:** 9.3 (Critical)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N`
+
 - **Lokalizacja:** `/wp-content/plugins/wp-advanced-search/class.inc/autocompletion/autocompletion-PHP5.5.php` (parametr GET: `f`)
 
 - **Opis:** Parametr `f` nie jest poddawany odpowiedniej sanityzacji. Aplikacja podatna jest na wstrzykiwanie kodu SQL, który jest wykonywany przez bazę danych, a wyniki zwracane są w komunikatach błędów (XPATH syntax error).
@@ -286,6 +294,10 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 - **CWE:** CWE-307: Improper Restriction of Excessive Authentication Attempts
 	
 - **Podatność:** Password Brute Force via XML-RPC API
+
+- **CVSS v4.0 Score:** 6.9 (Medium)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N`
     
 - **Lokalizacja:** `/xmlrpc.php` (Metoda API: `wp.getUsersBlogs` lub `system.multicall`)
     
@@ -327,6 +339,7 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
     
 - **Dowód wizualny:**
   ![Błąd wyświetlania](/screenshots/PoC-XMLRPC-BruteForce.png)
+
 - **Wynik:** Pomyślnie złamano hasło użytkownika.
     
     - Login: `kowal321`
@@ -341,6 +354,10 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 - **CVE:** CVE-2019-20041 (Bypass filtru wp_kses)
 
 - **Podatność:** Stored Cross-Site Scripting (XSS) via Comment Section
+
+- **CVSS v4.0 Score:** 5.1 (Medium)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:N/VI:N/VA:N/SC:L/SI:L/SA:N`
 
 - **Lokalizacja:** Formularz komentarzy (dostępny publicznie dla gości).
 
@@ -371,7 +388,8 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 
 - **ID:** V-05
 - **CWE:** CWE-200: Exposure of Sensitive Information to Unauthorized Actor
-- **Klasyfikacja OWASP:** A05:2025 – Security Misconfiguration
+- **CVSS v4.0 Score:** 6.9 (Medium)
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N`
 - **Podatność:** User Enumeration via REST API
 - **Lokalizacja:** `/index.php?rest_route=/wp/v2/users`
 - **Opis:** Aplikacja posiada domyślnie włączony interfejs REST API, który nie wymaga uwierzytelniania do odczytu listy użytkowników. Endpoint `/wp/v2/users` zwraca pełną listę kont zarejestrowanych w systemie, w tym pole `slug`, które w WordPressie odpowiada loginowi użytkownika. Pozwala to atakującemu na przeprowadzenie ukierunkowanego ataku siłowego (typu Brute Force) bez konieczności zgadywania nazw użytkowników.
@@ -413,13 +431,17 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
 - **Ryzyko:** Średnie. Ujawnienie loginów drastycznie zmniejsza złożoność ataku słownikowego na hasła.
 
 
-### V-06: Cross-Site Request Forgery (CSRF) - A01:2025
+### V-06: Cross-Site Request Forgery (CSRF) - A01:2025 – Broken Access Control
 
 - **ID:** V-06
     
 - **CVE:** CVE-2022-47447
     
 - **Podatność:** Cross-Site Request Forgery (CSRF) prowadzące do zmiany konfiguracji ACL.
+
+- **CVSS v4.0 Score:** 5.3 (Medium)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N`
     
 - **Lokalizacja:** `/wp-admin/admin.php?page=wp-advanced-search` (Funkcja zapisu ustawień `wpas_save_settings`)
     
@@ -465,13 +487,17 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
     
 - **Ryzyko:** Średnie/Wysokie. Podatność pozwala na nieautoryzowaną modyfikację konfiguracji. W tym przypadku zademonstrowano sabotaż mechanizmu kontroli dostępu (Broken Access Control), co eksponuje funkcje administracyjne wtyczki dla użytkowników o niskich uprawnieniach. Może to posłużyć jako punkt wyjścia do dalszych ataków (np. jeśli panel wtyczki posiada luki XSS lub SQLi, są one teraz dostępne dla szerszego grona atakujących).
 
-### V-07: Server-Side Request Forgery (SSRF) - A10:2025
+### V-07: Blind Server-Side Request Forgery (XML-RPC) - A10:2025 – Server-Side Request Forgery
 
 - **ID:** V-07
     
 - **CVE:** CVE-2022-3590
     
 - **Podatność:** Blind Server-Side Request Forgery (SSRF)
+
+- **CVSS v4.0 Score:** 6.0 (Medium)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N`
     
 - **Lokalizacja:** `/xmlrpc.php` (Metoda API: `pingback.ping`)
     
@@ -498,13 +524,17 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
     
 - **Ryzyko:** Średnie. Możliwość interakcji z usługami wewnętrznymi, które nie wymagają uwierzytelniania, lub wykorzystanie serwera do ataków typu DoS na inne elementy infrastruktury.
 
-### V-08: Unauthenticated Arbitrary File Upload (RCE) - A03:2025 – Injection
+### V-08: Unauthenticated Arbitrary File Upload (RCE) - A04:2025 – Insecure Design
 
 - **ID:** V-08
 
 - **CWE:** CWE-434: Unrestricted Upload of File with Dangerous Type
 
 - **Podatność:** Remote Code Execution (RCE) via Insufficient File Validation
+
+- **CVSS v4.0 Score:** 9.3 (Critical)
+
+- **Wektor CVSS:** `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N`
 
 - **Lokalizacja:** Podstrona `/rekrutacja` (Wtyczka `wp-file-upload` v4.12.2)
 
@@ -570,26 +600,27 @@ _Działania podjęte po pomyślnej eksploatacji podatności w celu oceny realneg
 ## FAZA 7: Raportowanie Wyników (Reporting)
 
 ### 7.1. Podsumowanie Zarządcze (Executive Summary)
-Przeprowadzony audyt bezpieczeństwa aplikacji "PracaInzynierskaBlog" wykazał **KRYTYCZNY** poziom ryzyka dla bezpieczeństwa przetwarzanych danych oraz ciągłości działania serwisu.
+Przeprowadzony audyt bezpieczeństwa aplikacji "PracaInzynierskaBlog" wykazał **krytyczny** poziom ryzyka dla bezpieczeństwa przetwarzanych danych oraz ciągłości działania serwisu.
 
-W toku prac zidentyfikowano 8 podatności, z których 3 posiadają status **Krytyczny**. Najpoważniejsze luki (RCE - Zdalne Wykonanie Kodu) pozwalają nieautoryzowanemu atakującemu na całkowite przejęcie kontroli nad serwerem, modyfikację zawartości strony oraz kradzież pełnej bazy danych użytkowników i klientów.
+W toku prac zidentyfikowano 8 podatności, z których 3 posiadają status **krytyczny**. Najpoważniejsze luki (RCE - Zdalne Wykonanie Kodu) pozwalają nieautoryzowanemu atakującemu na całkowite przejęcie kontroli nad serwerem, modyfikację zawartości strony oraz kradzież pełnej bazy danych użytkowników i klientów.
 
 **Kluczowe ryzyka biznesowe:**
 1.  **Całkowita utrata poufności:** Atakujący ma swobodny dostęp do danych osobowych i haseł.
 2.  **Utrata wizerunku:** Możliwość podmienienia treści strony (Defacement) lub wykorzystania serwera do atakowania innych podmiotów.
 3.  **Trwałość ataku:** Zidentyfikowano błędy konfiguracyjne pozwalające atakującemu na instalację tzw. tylnych furtek (backdoors), zapewniających dostęp nawet po zmianie haseł.
+4.  **Ryzyko prawne i regulacyjne (RODO/GDPR):** Przejęcie bazy danych zawierającej dane osobowe użytkowników stanowi naruszenie poufności, które zgodnie z art. 33 RODO może wymagać zgłoszenia do UODO oraz wiązać się z wysokimi karami administracyjnymi.
 
 **Rekomendacja:** Zaleca się natychmiastowe wyłączenie serwisu z sieci publicznej do czasu wdrożenia poprawek krytycznych (aktualizacja wtyczek, usunięcie złośliwego oprogramowania).
 
 ### 7.2. Podsumowanie Techniczne
-Testy przeprowadzono zgodnie z metodyką **PTES** (Penetration Testing Execution Standard) w modelu **Grey Box** (częściowa wiedza o systemie). Analizę podatności oparto o klasyfikację **OWASP Top 10 (2025)**.
+Testy przeprowadzono zgodnie z metodyką PTES (Penetration Testing Execution Standard) w modelu grey-box (częściowa wiedza o systemie). Analizę podatności oparto o klasyfikację OWASP Top 10 (2025).
 
 **Statystyki Podatności:**
 - **Krytyczne:** 3 (RCE, SQL Injection, Arbitrary File Upload)
-- **Wysokie:** 2 (Stored XSS, Brute Force XML-RPC)
-- **Średnie:** 3 (CSRF, SSRF, Sensitive Data Exposure)
+- **Wysokie:** 0
+- **Średnie:** 5 (Stored XSS, Brute Force, CSRF, SSRF, Sensitive Data Exposure)
 
-Główną przyczyną tak złego stanu bezpieczeństwa jest tzw. **dług technologiczny** – wykorzystanie niewspieranej wersji systemu CMS WordPress (5.3) oraz wtyczek nieaktualizowanych od kilku lat (`social-warfare`, `wp-file-upload`). Dodatkowo, serwer (kontener Docker) łamie zasadę najmniejszych upwranień (Least Privilege), łącząc się z bazą danych jako użytkownik `root`.
+Główną przyczyną tak złego stanu bezpieczeństwa jest tzw. dług technologiczny – wykorzystanie niewspieranej wersji systemu CMS WordPress (5.3) oraz wtyczek nieaktualizowanych od kilku lat (`social-warfare`, `wp-file-upload`). Dodatkowo, serwer (kontener Docker) łamie zasadę najmniejszych uprawnień, łącząc się z bazą danych jako użytkownik `root`.
 
 ### 7.3. Rekomendacje Ogólne (Hardening)
 Oprócz naprawy konkretnych podatności opisanych w Fazie 5, należy wdrożyć systemowe zmiany podnoszące poziom bezpieczeństwa:
@@ -607,7 +638,7 @@ Oprócz naprawy konkretnych podatności opisanych w Fazie 5, należy wdrożyć s
 
 3.  **Ochrona Aplikacji Webowej (WAF):**
     - Wdrożenie Web Application Firewall (np. ModSecurity lub wtyczka typu Wordfence) w celu blokowania prób SQL Injection i XSS.
-    - Ograniczenie dostępu do `/wp-admin` tylko dla zaufanych adresów IP (jeśli możliwe) lub wdrożenie 2FA (Two-Factor Authentication).
+    - Ograniczenie dostępu do `/wp-admin` tylko dla zaufanych adresów IP (jeśli możliwe) lub wdrożenie 2FA.
 
 4.  **Zabezpieczenie API:**
     - Całkowite wyłączenie `xmlrpc.php`, jeśli nie jest wymagany przez zewnętrzne integracje (mitygacja Brute Force i SSRF).
