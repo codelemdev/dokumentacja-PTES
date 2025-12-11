@@ -368,7 +368,7 @@ _Rejestr potwierdzonych i pomyślnie wykorzystanych podatności._
   1.  Jako użytkownik anonimowy (niezalogowany), nawigowano do sekcji komentarzy dowolnego wpisu.
   2.  Wysłano komentarz zawierający payload wykorzystujący technikę "Colon Bypass":
       ```html
-      <a href="javascript&colon;alert('XSS_BYPASS_SUKCES')">Kliknij mnie (XSS)</a>
+      <a href="javascript&colon;alert('XSS_BYPASS_SUKCES')">...</a>
       ```
   3.  Filtr `wp_kses` nie wykrył zagrożenia, ponieważ nie rozpoznał ciągu `javascript&colon;` jako zakazanego protokołu.
   4.  Serwer zapisał komentarz i wygenerował odpowiedź HTML zawierającą wstrzyknięty kod.
